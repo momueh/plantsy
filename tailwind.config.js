@@ -29,11 +29,6 @@ export default {
                 normal: "400",
                 medium: "500",
             },
-            spacing: {
-                1: "0.6em",
-                2: "1.2em",
-                3: "3.2em",
-            },
             borderRadius: {
                 lg: "8px",
             },
