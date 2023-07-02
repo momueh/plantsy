@@ -2,11 +2,11 @@
 import React, { useState, useEffect } from "react";
 import Dropzone from "./Dropzone";
 import ButtonGroup from "./ButtonGroup";
-import ResultCard from "./ResultCard";
+import ResultSection from "./ResultSection";
 import HistoryList from "./HistoryList";
-import SkeletonLoader from "./SkeletonResultCard";
+import SkeletonResultSection from "./SkeletonResultSection";
 
-const HeroSection: React.FC = () => {
+const InteractionWrapper: React.FC = () => {
     const [images, setImages] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(false); // add this state
     const [identificationResult, setIdentificationResult] = useState<any>(null); // add this state
@@ -80,14 +80,20 @@ const HeroSection: React.FC = () => {
     const handleReset = () => {
         setImages([]);
     };
+
+    console.log("result", identificationResult);
+    console.log("history", resultHistory);
     return (
         <section className="bg-light-bg p-6">
             <div className="flex justify-center items-center flex-col max-w-7xl mx-auto">
                 {/* Render the ResultCard component if identificationResult is not null */}
-                {identificationResult && (
-                    <ResultCard suggestion={identificationResult.suggestions[0]} />
+                {!identificationResult && (
+                    // <ResultSection
+                    //     suggestion={identificationResult.classification.suggestions[0]}
+                    // />
+                    <ResultSection suggestion={resultHistory[0]} />
                 )}
-                {isLoading && <SkeletonLoader />}
+                {isLoading && <SkeletonResultSection />}
                 <Dropzone onDrop={handleFiles} accept="image/*" />
                 <ButtonGroup onButtonClick={handleButtonClick} />
                 {identificationResult && (
@@ -98,10 +104,10 @@ const HeroSection: React.FC = () => {
                         Identify Another Plant
                     </button>
                 )}
-                {resultHistory.length > 0 && <HistoryList />}
+                {resultHistory.length > 0 && <HistoryList history={resultHistory} />}
             </div>
         </section>
     );
 };
 
-export default HeroSection;
+export default InteractionWrapper;

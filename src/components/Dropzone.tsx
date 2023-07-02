@@ -69,8 +69,8 @@ const Dropzone: React.FC<DropzoneProps> = ({ onDrop, accept }) => {
 
     return (
         <div
-            className={`flex justify-center items-center border-2 border-dashed border-button-bg hover:border-gray-500 w-full p-4 rounded-lg my-4 ${
-                highlight ? "bg-primary" : "bg-light-bg"
+            className={`min-h-24 flex flex-col justify-center border-2 border-dashed border-button-bg hover:border-gray-500 w-full p-4 rounded-lg my-4 ${
+                highlight ? "border-gray-500" : "bg-light-bg"
             }`}
             onClick={openFileDialog}
             onDragOver={onDragOver}
@@ -84,7 +84,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onDrop, accept }) => {
                 onChange={onFilesAdded}
                 accept={accept}
             />
-            <p className="text-body h-24 text-center ">
+            <p className="text-body text-center ">
                 Drag 'n' drop some files here, or click to select files
             </p>
             {error && <p className="text-red-600 mt-2">{error}</p>}
@@ -93,7 +93,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onDrop, accept }) => {
                     <img
                         key={index}
                         src={URL.createObjectURL(file)}
-                        className="h-16 w-16 object-cover rounded-lg"
+                        className="h-20 w-20 object-cover rounded-lg"
                         alt="preview"
                     />
                 ))}
