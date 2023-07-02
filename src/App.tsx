@@ -1,8 +1,7 @@
 import React from "react";
 import Header from "./components/Header";
-import HeroSection from "./components/HeroSection";
-import ResultDisplay from "./components/ResultDisplay";
-import HistoryList from "./components/HistoryList";
+import InteractionWrapper from "./components/InteractionWrapper";
+import Hero from "./components/Hero";
 import Footer from "./components/Footer";
 import { Toaster } from "react-hot-toast";
 
@@ -10,9 +9,8 @@ const App: React.FC = () => {
     return (
         <>
             <Header />
-            <HeroSection />
-            <ResultDisplay />
-            <HistoryList />
+            <Hero />
+            <InteractionWrapper />
             <Footer />
             <Toaster /> {/* Add Toaster here */}
         </>

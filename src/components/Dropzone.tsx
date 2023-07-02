@@ -86,12 +86,12 @@ const Dropzone: React.FC<DropzoneProps> = ({ onDrop, accept }) => {
             />
             <p className="text-body">Drag 'n' drop some files here, or click to select files</p>
             {error && <p className="text-red-600 mt-2">{error}</p>}
-            <div className="mt-4">
+            <div className="flex mt-4 space-x-4">
                 {selectedFiles.map((file, index) => (
                     <img
                         key={index}
                         src={URL.createObjectURL(file)}
-                        className="h-16 w-16 object-cover"
+                        className="h-16 w-16 object-cover rounded-lg"
                         alt="preview"
                     />
                 ))}

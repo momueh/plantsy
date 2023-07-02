@@ -1,13 +1,23 @@
 // HeroSection.tsx
-import React, { useState } from "react";
-import HeroImage from "./HeroImage";
-import HeroText from "./HeroText";
+import React, { useState, useEffect } from "react";
 import Dropzone from "./Dropzone";
 import ButtonGroup from "./ButtonGroup";
+import ResultCard from "./ResultCard";
+import HistoryList from "./HistoryList";
+import SkeletonLoader from "./SkeletonResultCard";
 
 const HeroSection: React.FC = () => {
     const [images, setImages] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(false); // add this state
+    const [identificationResult, setIdentificationResult] = useState<any>(null); // add this state
+    const [resultHistory, setResultHistory] = useState<any[]>([]);
+
+    useEffect(() => {
+        const storedHistory = sessionStorage.getItem("history");
+        if (storedHistory) {
+            setResultHistory(JSON.parse(storedHistory));
+        }
+    }, []);
 
     const handleFiles = async (files: FileList | null) => {
         if (files) {
@@ -54,6 +64,12 @@ const HeroSection: React.FC = () => {
                     sessionStorage.setItem("tokens", JSON.stringify(currentTokens));
                 }
                 setIsLoading(false); // set loading state to false when the request is complete
+                setIdentificationResult(data.result);
+                setResultHistory((prev) => [...prev, data.result.classification.suggestions[0]]);
+                sessionStorage.setItem(
+                    "history",
+                    JSON.stringify([...resultHistory, data.result.classification.suggestions[0]])
+                );
             })
             .catch((error) => {
                 console.error(error);
@@ -61,14 +77,28 @@ const HeroSection: React.FC = () => {
             });
     };
 
+    const handleReset = () => {
+        setImages([]);
+    };
     return (
         <section className="bg-light-bg p-6">
             <div className="flex justify-center items-center flex-col max-w-7xl mx-auto">
-                <HeroImage />
-                <HeroText />
-                {isLoading && <p>Loading...</p>} {/* Render this paragraph if isLoading is true */}
+                {/* Render the ResultCard component if identificationResult is not null */}
+                {identificationResult && (
+                    <ResultCard suggestion={identificationResult.suggestions[0]} />
+                )}
+                {isLoading && <SkeletonLoader />}
                 <Dropzone onDrop={handleFiles} accept="image/*" />
                 <ButtonGroup onButtonClick={handleButtonClick} />
+                {identificationResult && (
+                    <button
+                        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+                        onClick={handleReset}
+                    >
+                        Identify Another Plant
+                    </button>
+                )}
+                {resultHistory.length > 0 && <HistoryList />}
             </div>
         </section>
     );

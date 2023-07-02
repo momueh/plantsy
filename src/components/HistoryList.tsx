@@ -1,28 +1,21 @@
-// HistoryList.tsx
-import React, { useEffect, useState } from "react";
-
-interface HistoryItem {
-    id: string;
-    result: any; // Define the result type based on your API response
-}
+import React, { useState, useEffect } from "react";
+import ResultCard from "./ResultCard";
 
 const HistoryList: React.FC = () => {
-    const [historyItems, setHistoryItems] = useState<HistoryItem[]>([]);
+    const [history, setHistory] = useState<any[]>([]);
 
     useEffect(() => {
-        const savedHistory = sessionStorage.getItem("history");
-        if (savedHistory) {
-            setHistoryItems(JSON.parse(savedHistory));
+        const storedHistory = sessionStorage.getItem("history");
+        if (storedHistory) {
+            setHistory(JSON.parse(storedHistory));
         }
     }, []);
 
     return (
-        <div className="p-4 rounded-md bg-primary text-body">
-            <h2 className="font-bold text-xl mb-2">History:</h2>
-            {historyItems.map((item) => (
-                <div key={item.id}>
-                    <p>{item.result}</p>
-                </div>
+        <div className="p-4">
+            <h2 className="text-lg font-semibold mb-2">Identification History</h2>
+            {history.map((result, index) => (
+                <ResultCard key={index} suggestion={result} />
             ))}
         </div>
     );
