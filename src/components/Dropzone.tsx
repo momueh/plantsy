@@ -69,7 +69,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onDrop, accept }) => {
 
     return (
         <div
-            className={`border-2 border-dashed border-button-bg w-full p-4 rounded-lg my-4 ${
+            className={`flex justify-center items-center border-2 border-dashed border-button-bg hover:border-gray-500 w-full p-4 rounded-lg my-4 ${
                 highlight ? "bg-primary" : "bg-light-bg"
             }`}
             onClick={openFileDialog}
@@ -84,7 +84,9 @@ const Dropzone: React.FC<DropzoneProps> = ({ onDrop, accept }) => {
                 onChange={onFilesAdded}
                 accept={accept}
             />
-            <p className="text-body">Drag 'n' drop some files here, or click to select files</p>
+            <p className="text-body h-24 text-center ">
+                Drag 'n' drop some files here, or click to select files
+            </p>
             {error && <p className="text-red-600 mt-2">{error}</p>}
             <div className="flex mt-4 space-x-4">
                 {selectedFiles.map((file, index) => (

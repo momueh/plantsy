@@ -10,7 +10,7 @@ export default {
                 primary: "#74D3AE",
                 secondary: "#678D58",
                 tertiary: "#A6C48A",
-                background: "#F6E7CB",
+                background: "#E8C8A0",
                 contrast: "#DD9787",
                 logo: "#ffffff",
             },
