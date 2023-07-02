@@ -87,7 +87,7 @@ const InteractionWrapper: React.FC = () => {
         <section className="bg-light-bg p-6">
             <div className="flex justify-center items-center flex-col max-w-7xl mx-auto">
                 {/* Render the ResultCard component if identificationResult is not null */}
-                {!identificationResult && (
+                {identificationResult && (
                     // <ResultSection
                     //     suggestion={identificationResult.classification.suggestions[0]}
                     // />
