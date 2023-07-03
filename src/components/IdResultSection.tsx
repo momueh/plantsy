@@ -1,12 +1,14 @@
 import React from "react";
-import { Suggestion } from "../globalTypes";
+import { PlantIdentificationResult } from "../globalTypes";
 
 type IdResultSectionProps = {
-    suggestion: Suggestion;
+    result: PlantIdentificationResult;
 };
 
-const IdResultSection: React.FC<IdResultSectionProps> = ({ suggestion }) => {
-    const { name, probability, similar_images } = suggestion;
+const IdResultSection: React.FC<IdResultSectionProps> = ({ result }) => {
+    const { classification, is_plant } = result;
+    const bestMatch = classification.suggestions[0];
+    const { name, probability, similar_images } = bestMatch;
 
     return (
         <div className="w-full flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-6 my-8">
@@ -20,12 +22,15 @@ const IdResultSection: React.FC<IdResultSectionProps> = ({ suggestion }) => {
                     for this identified plant using the same or additional images, by clicking the
                     Button Assess Plant Health.
                     <br />
+                </p>
+                <p className="text-lg mt-4">
                     You can also reset and start over with different images or identify your next
                     plant!
                 </p>
             </div>
-            <div className="flex-1 flex flex-col items-center border p-6 rounded shadow-lg">
+            <div className="flex-1 flex flex-col items-center border p-6 rounded shadow-lg w-full overflow-y-auto max-h-96">
                 <h3 className="text-2xl font-semibold mb-2">{name}</h3>
+                <p className="text-lg">Is Plant: {is_plant.binary}</p>
                 <p className="text-lg">Confidence: {(probability * 100).toFixed(2)}%</p>
                 <p className="text-lg">Similar Images:</p>
                 <div className="flex gap-4 mt-4">

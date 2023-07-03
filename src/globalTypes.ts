@@ -3,8 +3,9 @@ export type Classification = {
 };
 
 export type PlantIdentificationResult = {
-    is_plant: IsHealthy; // We can reuse IsHealthy here, as the structure is the same
+    is_plant: IsPlant;
     classification: Classification;
+    analysisType?: "id";
 };
 
 export type SimilarImage = {
@@ -12,7 +13,7 @@ export type SimilarImage = {
     url: string;
     similarity: number;
     url_small: string;
-    license_name?: string; // Add optional properties which exist in the new structure
+    license_name?: string;
     license_url?: string;
     citation?: string;
 };
@@ -25,14 +26,20 @@ export type Details = {
 export type Suggestion = {
     id: string;
     name: string;
-    source: string; // New property
+    source?: string; 
     probability: number;
     similar_images: SimilarImage[];
-    redundant: boolean; // New property
-    details: Details;
+    redundant?: boolean;
+    details?: Details;
 };
 
 export type IsHealthy = {
+    probability: number;
+    binary: boolean;
+    threshold: number;
+};
+
+export type IsPlant = {
     probability: number;
     binary: boolean;
     threshold: number;
@@ -45,4 +52,16 @@ export type Disease = {
 export type HealthAssessmentResult = {
     is_healthy: IsHealthy;
     disease: Disease;
+    analysisType?: "ha";
 };
+
+
+export type PlantIdentificationResultWithAnalysisType = PlantIdentificationResult & {
+    analysisType: "id";
+};
+
+export type HealthAssessmentResultWithAnalysisType = HealthAssessmentResult & {
+    analysisType: "ha";
+};
+
+export type HistoryItem = PlantIdentificationResultWithAnalysisType | HealthAssessmentResultWithAnalysisType;
