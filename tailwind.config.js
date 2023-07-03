@@ -13,6 +13,7 @@ export default {
                 background: "#E8C8A0",
                 contrast: "#DD9787",
                 logo: "#ffffff",
+                hoverPrimary: "#37ae81",
             },
 
             lineHeight: {

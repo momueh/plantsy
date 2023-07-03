@@ -148,24 +148,26 @@ const InteractionWrapper: React.FC = () => {
 
                 <div className="flex gap-4">
                     <button
-                        className="bg-primary text-light-bg rounded-lg py-2 px-4"
+                        className="bg-primary text-light-bg rounded-lg py-2 px-4 hover:bg-hoverPrimary"
                         onClick={handleIdentification}
                     >
                         Identify Plant
                     </button>
                     <button
-                        className="bg-primary text-light-bg rounded-lg py-2 px-4"
+                        className="bg-primary text-light-bg rounded-lg py-2 px-4 hover:bg-hoverPrimary"
                         onClick={handleHealthAssesment}
                     >
                         Assess Plant Health
                     </button>
                 </div>
-                <button
-                    className="bg-primary text-light-bg rounded-lg py-2 px-4"
-                    onClick={handleReset}
-                >
-                    Reset Images and Results
-                </button>
+                {mode == "default" && (
+                    <button
+                        className="bg-primary text-light-bg rounded-lg py-2 px-4 mt-6 hover:bg-hoverPrimary"
+                        onClick={handleReset}
+                    >
+                        Reset Images and Results
+                    </button>
+                )}
 
                 {resultHistory.length > 0 && <HistoryList history={resultHistory} />}
             </div>

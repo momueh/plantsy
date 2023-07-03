@@ -86,7 +86,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onDrop, accept, selectedFiles, setS
                 accept={accept}
             />
             <p className="text-body text-center ">
-                Drag 'n' drop some files here, or click to select files
+                Drag 'n' drop some images here, or click to select images
             </p>
             {error && <p className="text-red-600 mt-2">{error}</p>}
             <div className="flex mt-4 space-x-4">
