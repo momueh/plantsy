@@ -7,13 +7,15 @@ import { Toaster } from "react-hot-toast";
 
 const App: React.FC = () => {
     return (
-        <>
-            <Header />
-            <Hero />
-            <InteractionWrapper />
+        <div className="flex flex-col min-h-screen justify-between">
+            <div>
+                <Header />
+                <Hero />
+                <InteractionWrapper />
+                <Toaster /> {/* Add Toaster here */}
+            </div>
             <Footer />
-            <Toaster /> {/* Add Toaster here */}
-        </>
+        </div>
     );
 };
 

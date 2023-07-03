@@ -1,14 +1,16 @@
 // HeroSection.tsx
 import React, { useState, useEffect } from "react";
 import Dropzone from "./Dropzone";
-import ButtonGroup from "./ButtonGroup";
-import ResultSection from "./ResultSection";
+import IdResultSection from "./IdResultSection";
+import HealthAssesmentResultSection from "./HealthAssesmentResultSection";
 import HistoryList from "./HistoryList";
 import SkeletonResultSection from "./SkeletonResultSection";
 
 const InteractionWrapper: React.FC = () => {
-    const [images, setImages] = useState<string[]>([]);
+    const [selectedFiles, setSelectedFiles] = useState<File[]>([]); // add this state
+    const [mode, setMode] = useState<"id" | "ha" | "default">("default"); // add this state
     const [isLoading, setIsLoading] = useState(false); // add this state
+    const [healthAssesmentResult, setHealthAssesmentResult] = useState<any>(null); // add this state
     const [identificationResult, setIdentificationResult] = useState<any>(null); // add this state
     const [resultHistory, setResultHistory] = useState<any[]>([]);
 
@@ -19,44 +21,33 @@ const InteractionWrapper: React.FC = () => {
         }
     }, []);
 
-    const handleFiles = async (files: FileList | null) => {
+    const handleFiles = (files: FileList | null) => {
         if (files) {
-            const base64Images: string[] = [];
-            for (let i = 0; i < files.length; i++) {
-                const base64Image = await toBase64(files[i]);
-                base64Images.push(base64Image);
-            }
-            setImages(base64Images);
+            setSelectedFiles(Array.from(files));
         }
     };
 
-    const toBase64 = (file: File) =>
-        new Promise<string>((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result as string);
-            reader.onerror = (error) => reject(error);
-        });
-
-    const handleButtonClick = () => {
+    const handleIdentification = () => {
+        setMode("id");
         setIsLoading(true); // set loading state to true when the request starts
+
+        const formData = new FormData();
+        selectedFiles.forEach((file, index) => {
+            formData.append(`images[${index}]`, file);
+        });
+        formData.append("latitude", "52.52"); // Berlin
+        formData.append("longitude", "13.404"); // Berlin
+        formData.append("similar_images", "true");
 
         fetch("https://plant.id/api/v3/identification", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
                 "Api-Key": import.meta.env.VITE_PLANTID_APIKEY, // use environment variable here
             },
-            body: JSON.stringify({
-                images: images,
-                latitude: 49.207, // you can replace these with actual values
-                longitude: 16.608, // you can replace these with actual values
-                similar_images: true,
-            }),
+            body: formData,
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 const token = data.access_token;
                 if (token) {
                     const currentTokens = JSON.parse(sessionStorage.getItem("tokens") || "[]");
@@ -77,33 +68,105 @@ const InteractionWrapper: React.FC = () => {
             });
     };
 
-    const handleReset = () => {
-        setImages([]);
+    const handleHealthAssesment = () => {
+        setMode("ha");
+        setIsLoading(true); // set loading state to true when the request starts
+
+        const formData = new FormData();
+        selectedFiles.forEach((file, index) => {
+            formData.append(`images[${index}]`, file);
+        });
+        formData.append("latitude", "52.52"); // Berlin
+        formData.append("longitude", "13.404"); // Berlin
+        formData.append("similar_images", "true");
+
+        fetch("https://plant.id/api/v3/health_assessment", {
+            method: "POST",
+            headers: {
+                "Api-Key": import.meta.env.VITE_PLANTID_APIKEY, // use environment variable here
+            },
+            body: formData,
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                const token = data.access_token;
+                if (token) {
+                    const currentTokens = JSON.parse(sessionStorage.getItem("tokens") || "[]");
+                    currentTokens.push(token);
+                    sessionStorage.setItem("tokens", JSON.stringify(currentTokens));
+                }
+                setIsLoading(false); // set loading state to false when the request is complete
+                setHealthAssesmentResult(data.result);
+                setResultHistory((prev) => [...prev, data.result.classification.suggestions[0]]);
+                sessionStorage.setItem(
+                    "history",
+                    JSON.stringify([...resultHistory, data.result.classification.suggestions[0]])
+                );
+            })
+            .catch((error) => {
+                console.error(error);
+                setIsLoading(false); // also set loading state to false if there's an error
+            });
     };
 
-    console.log("result", identificationResult);
+    const handleReset = () => {
+        //complete reset, so user can start over with new images
+        setSelectedFiles([]);
+        setMode("default");
+        setIsLoading(false);
+        setIdentificationResult(null);
+        setHealthAssesmentResult(null);
+    };
+
+    console.log("idresult", identificationResult);
+    console.log("haresult", healthAssesmentResult);
     console.log("history", resultHistory);
     return (
         <section className="bg-light-bg p-6">
             <div className="flex justify-center items-center flex-col max-w-7xl mx-auto">
                 {/* Render the ResultCard component if identificationResult is not null */}
-                {identificationResult && (
+                {identificationResult && mode === "id" && (
                     // <ResultSection
                     //     suggestion={identificationResult.classification.suggestions[0]}
                     // />
-                    <ResultSection suggestion={resultHistory[0]} />
+                    <IdResultSection suggestion={resultHistory[0]} />
                 )}
-                {isLoading && <SkeletonResultSection />}
-                <Dropzone onDrop={handleFiles} accept="image/*" />
-                <ButtonGroup onButtonClick={handleButtonClick} />
-                {identificationResult && (
+                {healthAssesmentResult && mode === "ha" && (
+                    // <ResultSection
+                    //     suggestion={healthAssesmentResult}
+                    // />
+                    <HealthAssesmentResultSection result={resultHistory[0]} />
+                )}
+                {isLoading && <SkeletonResultSection mode={mode} />}
+                <Dropzone
+                    onDrop={handleFiles}
+                    accept="image/*"
+                    selectedFiles={selectedFiles}
+                    setSelectedFiles={setSelectedFiles}
+                />
+
+                <div className="flex gap-4">
                     <button
-                        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-                        onClick={handleReset}
+                        className="bg-primary text-light-bg rounded-lg py-2 px-4"
+                        onClick={handleIdentification}
                     >
-                        Identify Another Plant
+                        Identify Plant
                     </button>
-                )}
+                    <button
+                        className="bg-primary text-light-bg rounded-lg py-2 px-4"
+                        onClick={handleHealthAssesment}
+                    >
+                        Assess Plant Health
+                    </button>
+                </div>
+                <button
+                    className="bg-primary text-light-bg rounded-lg py-2 px-4"
+                    onClick={handleReset}
+                >
+                    Reset Images and Results
+                </button>
+
                 {resultHistory.length > 0 && <HistoryList history={resultHistory} />}
             </div>
         </section>

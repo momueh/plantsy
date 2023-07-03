@@ -1,29 +1,11 @@
 import React from "react";
+import { Suggestion } from "../globalTypes";
 
-type SimilarImage = {
-    url: string;
-    url_small: string;
-    similarity: number;
-};
-
-type Details = {
-    language: string;
-    entity_id: string;
-};
-
-type Suggestion = {
-    id: string;
-    name: string;
-    probability: number;
-    similar_images: SimilarImage[];
-    details: Details;
-};
-
-type ResultSectionProps = {
+type IdResultSectionProps = {
     suggestion: Suggestion;
 };
 
-const ResultSection: React.FC<ResultSectionProps> = ({ suggestion }) => {
+const IdResultSection: React.FC<IdResultSectionProps> = ({ suggestion }) => {
     const { name, probability, similar_images } = suggestion;
 
     return (
@@ -57,4 +39,4 @@ const ResultSection: React.FC<ResultSectionProps> = ({ suggestion }) => {
     );
 };
 
-export default ResultSection;
+export default IdResultSection;

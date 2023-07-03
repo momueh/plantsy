@@ -1,6 +1,10 @@
 import React from "react";
 
-const SkeletonResultSection: React.FC = () => {
+type SkeletonProps = {
+    mode: "id" | "ha" | "default";
+};
+
+const SkeletonResultSection: React.FC<SkeletonProps> = ({ mode }) => {
     return (
         <div className="w-full flex space-x-4 my-8">
             <div className="w-1/2 space-y-4">

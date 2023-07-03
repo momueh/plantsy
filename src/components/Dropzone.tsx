@@ -4,12 +4,13 @@ import { toast } from "react-hot-toast";
 type DropzoneProps = {
     onDrop: (selectedFiles: FileList | null) => void;
     accept: string;
+    selectedFiles: File[];
+    setSelectedFiles: React.Dispatch<React.SetStateAction<File[]>>;
 };
 
-const Dropzone: React.FC<DropzoneProps> = ({ onDrop, accept }) => {
+const Dropzone: React.FC<DropzoneProps> = ({ onDrop, accept, selectedFiles, setSelectedFiles }) => {
     const [highlight, setHighlight] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
     const fileInputRef = React.createRef<HTMLInputElement>();
 
@@ -27,10 +28,10 @@ const Dropzone: React.FC<DropzoneProps> = ({ onDrop, accept }) => {
             const filesArray = Array.from(evt.target.files);
             if (filesArray.some((file) => file.size > maxFileSize)) {
                 setError("File size exceeds 15MB limit");
-            } else if (filesArray.length > maxTotalFiles) {
+            } else if (selectedFiles.length + filesArray.length > maxTotalFiles) {
                 setError("Cannot select more than 10 files");
             } else {
-                setSelectedFiles(filesArray);
+                setSelectedFiles((prevFiles) => [...prevFiles, ...filesArray]);
                 onDrop(evt.target.files);
                 toast(`${evt.target.files.length} images successfully added!`);
             }
