@@ -1,30 +1,13 @@
 import React from "react";
 
-type SimilarImage = {
-    url: string;
-    url_small: string;
-    similarity: number;
-};
-
-type Details = {
-    language: string;
-    entity_id: string;
-};
-
-type Suggestion = {
-    id: string;
-    name: string;
-    probability: number;
-    similar_images: SimilarImage[];
-    details: Details;
-};
+import { Suggestion } from "../globalTypes";
 
 export type ResultCardProps = {
     suggestion: Suggestion;
-    size?: "small" | "large";
+    is_healthy: boolean;
 };
 
-const ResultCard: React.FC<ResultCardProps> = ({ suggestion, size }) => {
+const ResultCard: React.FC<ResultCardProps> = ({ suggestion }) => {
     const { name, probability, similar_images } = suggestion;
 
     return (

@@ -98,11 +98,8 @@ const InteractionWrapper: React.FC = () => {
                 }
                 setIsLoading(false); // set loading state to false when the request is complete
                 setHealthAssesmentResult(data.result);
-                setResultHistory((prev) => [...prev, data.result.classification.suggestions[0]]);
-                sessionStorage.setItem(
-                    "history",
-                    JSON.stringify([...resultHistory, data.result.classification.suggestions[0]])
-                );
+                setResultHistory((prev) => [...prev, data.result]);
+                sessionStorage.setItem("history", JSON.stringify([...resultHistory, data.result]));
             })
             .catch((error) => {
                 console.error(error);
@@ -122,6 +119,9 @@ const InteractionWrapper: React.FC = () => {
     console.log("idresult", identificationResult);
     console.log("haresult", healthAssesmentResult);
     console.log("history", resultHistory);
+    console.log("mode", mode);
+    console.log("selectedFiles", selectedFiles);
+
     return (
         <section className="bg-light-bg p-6">
             <div className="flex justify-center items-center flex-col max-w-7xl mx-auto">
@@ -133,12 +133,10 @@ const InteractionWrapper: React.FC = () => {
                     <IdResultSection suggestion={resultHistory[0]} />
                 )}
                 {healthAssesmentResult && mode === "ha" && (
-                    // <ResultSection
-                    //     suggestion={healthAssesmentResult}
-                    // />
-                    <HealthAssesmentResultSection result={resultHistory[0]} />
+                    <HealthAssesmentResultSection result={healthAssesmentResult} />
+                    // <HealthAssesmentResultSection result={resultHistory[0]} />
                 )}
-                {isLoading && <SkeletonResultSection mode={mode} />}
+                {isLoading && mode !== "default" && <SkeletonResultSection mode={mode} />}
                 <Dropzone
                     onDrop={handleFiles}
                     accept="image/*"
@@ -150,17 +148,19 @@ const InteractionWrapper: React.FC = () => {
                     <button
                         className="bg-primary text-light-bg rounded-lg py-2 px-4 hover:bg-hoverPrimary"
                         onClick={handleIdentification}
+                        disabled={selectedFiles.length === 0}
                     >
                         Identify Plant
                     </button>
                     <button
                         className="bg-primary text-light-bg rounded-lg py-2 px-4 hover:bg-hoverPrimary"
                         onClick={handleHealthAssesment}
+                        disabled={selectedFiles.length === 0}
                     >
                         Assess Plant Health
                     </button>
                 </div>
-                {mode == "default" && (
+                {mode !== "default" && (
                     <button
                         className="bg-primary text-light-bg rounded-lg py-2 px-4 mt-6 hover:bg-hoverPrimary"
                         onClick={handleReset}
@@ -169,7 +169,7 @@ const InteractionWrapper: React.FC = () => {
                     </button>
                 )}
 
-                {resultHistory.length > 0 && <HistoryList history={resultHistory} />}
+                {/* {resultHistory.length > 0 && <HistoryList history={resultHistory} />} */}
             </div>
         </section>
     );

@@ -33,7 +33,9 @@ const Dropzone: React.FC<DropzoneProps> = ({ onDrop, accept, selectedFiles, setS
             } else {
                 setSelectedFiles((prevFiles) => [...prevFiles, ...filesArray]);
                 onDrop(evt.target.files);
-                toast(`${evt.target.files.length} images successfully added!`);
+                toast.success(`${evt.target.files.length} images successfully added!`, {
+                    position: "top-right",
+                });
             }
         }
     };
@@ -59,7 +61,9 @@ const Dropzone: React.FC<DropzoneProps> = ({ onDrop, accept, selectedFiles, setS
             } else {
                 setSelectedFiles(filesArray);
                 onDrop(files);
-                toast(`${files.length} images successfully added!`);
+                toast.success(`${files.length} images successfully added!`, {
+                    position: "top-right",
+                });
                 setHighlight(false);
                 setError(null);
             }

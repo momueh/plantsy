@@ -16,8 +16,12 @@ const IdResultSection: React.FC<IdResultSectionProps> = ({ suggestion }) => {
                 </h2>
                 <p className="text-lg">
                     You can see the result with the highest confidence here. You can add more images
-                    to improve the result, if there is ambiguity. Or you can start over with
-                    different images or identify your next plant!
+                    to improve the result, if there is ambiguity. You can start a health assesment
+                    for this identified plant using the same or additional images, by clicking the
+                    Button Assess Plant Health.
+                    <br />
+                    You can also reset and start over with different images or identify your next
+                    plant!
                 </p>
             </div>
             <div className="flex-1 flex flex-col items-center border p-6 rounded shadow-lg">
