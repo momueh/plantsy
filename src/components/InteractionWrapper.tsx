@@ -8,7 +8,7 @@ import SkeletonResultSection from "./SkeletonResultSection";
 
 const InteractionWrapper: React.FC = () => {
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]); // add this state
-    const [mode, setMode] = useState<"id" | "ha" | "default">("ha"); // add this state
+    const [mode, setMode] = useState<"id" | "ha" | "default">("default"); // add this state
     const [isLoading, setIsLoading] = useState(false); // add this state
     const [healthAssesmentResult, setHealthAssesmentResult] = useState<any>(null); // add this state
     const [identificationResult, setIdentificationResult] = useState<any>(null); // add this state
@@ -139,7 +139,7 @@ const InteractionWrapper: React.FC = () => {
                     <HealthAssesmentResultSection result={healthAssesmentResult} />
                     // <HealthAssesmentResultSection result={resultHistory[0]} />
                 )}
-                {!isLoading && mode !== "default" && <SkeletonResultSection mode={mode} />}
+                {isLoading && mode !== "default" && <SkeletonResultSection mode={mode} />}
                 <Dropzone
                     onDrop={handleFiles}
                     accept="image/*"
