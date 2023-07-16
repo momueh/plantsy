@@ -4,11 +4,11 @@ import Dropzone from "./Dropzone";
 import IdResultSection from "./IdResultSection";
 import HealthAssesmentResultSection from "./HealthAssesmentResultSection";
 import HistoryList from "./HistoryList";
-import SkeletonResultSection from "./SkeletonResultSection";
+import LoadingSpinner from "./LoadingSpinner";
 
 const InteractionWrapper: React.FC = () => {
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]); // add this state
-    const [mode, setMode] = useState<"id" | "ha" | "default">("default"); // add this state
+    const [mode, setMode] = useState<"id" | "ha" | "default">("ha"); // add this state
     const [isLoading, setIsLoading] = useState(false); // add this state
     const [healthAssesmentResult, setHealthAssesmentResult] = useState<any>(null); // add this state
     const [identificationResult, setIdentificationResult] = useState<any>(null); // add this state
@@ -119,27 +119,21 @@ const InteractionWrapper: React.FC = () => {
         setHealthAssesmentResult(null);
     };
 
-    console.log("idresult", identificationResult);
-    console.log("haresult", healthAssesmentResult);
-    console.log("history", resultHistory);
-    console.log("mode", mode);
-    console.log("selectedFiles", selectedFiles);
-
     return (
         <section className="bg-light-bg p-6">
             <div className="flex justify-center items-center flex-col max-w-7xl mx-auto">
                 {/* Render the ResultCard component if identificationResult is not null */}
                 {identificationResult && mode === "id" && (
-                    // <ResultSection
-                    //     suggestion={identificationResult.classification.suggestions[0]}
-                    // />
                     <IdResultSection result={identificationResult} />
                 )}
                 {healthAssesmentResult && mode === "ha" && (
                     <HealthAssesmentResultSection result={healthAssesmentResult} />
-                    // <HealthAssesmentResultSection result={resultHistory[0]} />
                 )}
-                {isLoading && mode !== "default" && <SkeletonResultSection mode={mode} />}
+                {!isLoading && mode !== "default" && (
+                    <div className="w-full">
+                        <LoadingSpinner mode={mode} />
+                    </div>
+                )}
                 <Dropzone
                     onDrop={handleFiles}
                     accept="image/*"
