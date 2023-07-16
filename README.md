@@ -28,7 +28,7 @@ Ensure you have the following installed on your local system:
 1. Clone the repo:
 
 ```
-git clone https://github.com/username/projectname.git
+git clone https://github.com/momueh/plantsy.git
 ```
 
 2. Install NPM packages:
