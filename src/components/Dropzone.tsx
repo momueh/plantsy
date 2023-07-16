@@ -84,7 +84,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onDrop, accept, selectedFiles, setS
     // The returned JSX of the Dropzone component
     return (
         <div
-            className={`min-h-24 flex flex-col justify-center border-2 border-dashed border-button-bg hover:border-gray-500 w-full p-4 rounded-lg my-4 ${
+            className={`flex flex-col justify-center border-2 border-dashed border-button-bg hover:border-gray-500 w-full px-4 py-6 rounded-lg my-4 ${
                 highlight ? "border-gray-500" : "bg-light-bg"
             }`}
             onClick={openFileDialog}
@@ -99,7 +99,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onDrop, accept, selectedFiles, setS
                 onChange={onFilesAdded}
                 accept={accept}
             />
-            <p className="text-body text-center ">
+            <p className="text-body text-center">
                 Drag 'n' drop some images here, or click to select images
             </p>
             {error && <p className="text-red-600 mt-2">{error}</p>}
