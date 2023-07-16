@@ -100,7 +100,6 @@ const InteractionWrapper: React.FC = () => {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 const token = data.access_token;
                 if (token) {
                     const currentTokens = JSON.parse(sessionStorage.getItem("tokens") || "[]");

@@ -12,7 +12,7 @@ const App: React.FC = () => {
                 <Header />
                 <Hero />
                 <InteractionWrapper />
-                <Toaster /> {/* Add Toaster here */}
+                <Toaster />
             </div>
             <Footer />
         </div>
