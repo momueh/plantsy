@@ -1,28 +1,36 @@
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 
+// DropzoneProps: Defines the properties for the Dropzone component.
 type DropzoneProps = {
-    onDrop: (selectedFiles: FileList | null) => void;
-    accept: string;
-    selectedFiles: File[];
-    setSelectedFiles: React.Dispatch<React.SetStateAction<File[]>>;
+    onDrop: (selectedFiles: FileList | null) => void; // Callback function called when files are selected or dropped. It takes a FileList of selected files.
+    accept: string; // A string that defines the types of files that the dropzone should accept. Example: 'image/png, image/jpeg'.
+    selectedFiles: File[]; // An array of selected File objects.
+    setSelectedFiles: React.Dispatch<React.SetStateAction<File[]>>; // A function to set the selectedFiles state.
 };
 
+/**
+ * The Dropzone component. It renders a dropzone that accepts user's file drop or selection actions.
+ * It validates the dropped or selected files against file type, number of files, and individual file size.
+ * It uses state to manage internal state and toasts for feedback messages.
+ */
 const Dropzone: React.FC<DropzoneProps> = ({ onDrop, accept, selectedFiles, setSelectedFiles }) => {
+    // State variables for highlight, error message and file input reference
     const [highlight, setHighlight] = useState(false);
     const [error, setError] = useState<string | null>(null);
-
     const fileInputRef = React.createRef<HTMLInputElement>();
 
+    // Constants for maximum file size (15MB) and maximum total files (10)
     const maxFileSize = 15 * 1024 * 1024; // 15MB in bytes
     const maxTotalFiles = 10;
 
+    // Function to open the file dialog
     const openFileDialog = () => {
         if (fileInputRef.current) {
             fileInputRef.current.click();
         }
     };
-
+    // Function to handle addition of files via file dialog
     const onFilesAdded = (evt: React.ChangeEvent<HTMLInputElement>) => {
         if (evt.target.files) {
             const filesArray = Array.from(evt.target.files);
@@ -40,6 +48,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onDrop, accept, selectedFiles, setS
         }
     };
 
+    // Functions to handle file drag events
     const onDragOver = (evt: React.DragEvent<HTMLDivElement>) => {
         evt.preventDefault();
         setHighlight(true);
@@ -49,6 +58,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onDrop, accept, selectedFiles, setS
         setHighlight(false);
     };
 
+    // Function to handle drop of files
     const handleDrop = (evt: React.DragEvent<HTMLDivElement>) => {
         evt.preventDefault();
         const files = evt.dataTransfer.files;
@@ -71,7 +81,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onDrop, accept, selectedFiles, setS
             setError("Invalid file type");
         }
     };
-
+    // The returned JSX of the Dropzone component
     return (
         <div
             className={`min-h-24 flex flex-col justify-center border-2 border-dashed border-button-bg hover:border-gray-500 w-full p-4 rounded-lg my-4 ${
