@@ -6,9 +6,13 @@ import HealthAssessmentCard from "./HealthAssesmentCard";
 import { HistoryItem } from "../globalTypes";
 
 interface HistoryListProps {
-    history: HistoryItem[];
+    history: HistoryItem[]; // An array of history items, containing the results of previous analyses
 }
 
+/**
+ * This component displays a list of past results from plant identification and health assessment analyses.
+ * It uses the IdResultCard and HealthAssessmentCard components to display each individual result.
+ */
 const HistoryList: React.FC<HistoryListProps> = ({ history }) => {
     return (
         <div className="w-full p-4 mt-8">

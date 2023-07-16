@@ -2,9 +2,14 @@ import React from "react";
 import { HealthAssessmentResult } from "../globalTypes";
 
 export type HaResultCardProps = {
-    result: HealthAssessmentResult;
+    result: HealthAssessmentResult; // The result object of a health assessment api call
 };
 
+/**
+ * This component displays the result of a health assessment api call in a card.
+ * It is used only in the HistoryList component.
+ * It displays the probability of being healthy and a list of possible diseases.
+ */
 const HealthAssessmentCard: React.FC<HaResultCardProps> = ({ result }) => {
     const healthProbability = (result.is_healthy.probability * 100).toFixed(2);
 

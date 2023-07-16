@@ -2,9 +2,14 @@ import React from "react";
 import { PlantIdentificationResult } from "../globalTypes";
 
 type IdResultSectionProps = {
-    result: PlantIdentificationResult;
+    result: PlantIdentificationResult; // The result object of a plant identification api call
 };
 
+/**
+ * This component presents the results of a plant identification analysis in a detailed section.
+ * It includes information such as the name of the plant, whether it is indeed a plant,
+ * the confidence of the identification, and similar images.
+ */
 const IdResultSection: React.FC<IdResultSectionProps> = ({ result }) => {
     const { classification, is_plant } = result;
     const bestMatch = classification.suggestions[0];

@@ -1,11 +1,15 @@
 import React from "react";
 import { HealthAssessmentResult } from "../globalTypes";
 
-type ResultSectionProps = {
-    result: HealthAssessmentResult;
+type HaResultSectionProps = {
+    result: HealthAssessmentResult; // The result object of a health assessment api call
 };
 
-const HealthAssessmentResultSection: React.FC<ResultSectionProps> = ({ result }) => {
+/**
+ * This component displays the detailed results of a health assessment.
+ * It includes the overall health indicator as well as a list of possible diseases, with probabilities and similar images for each.
+ */
+const HealthAssessmentResultSection: React.FC<HaResultSectionProps> = ({ result }) => {
     const { disease, is_healthy } = result;
 
     // Calculate health probability as percentage

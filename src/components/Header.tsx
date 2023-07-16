@@ -1,6 +1,6 @@
 import React from "react";
 
-const LOGO_URL = "plantsy_logo.png"; // replace with your logo URL
+const LOGO_URL = "plantsy_logo.png";
 
 const Header: React.FC = () => {
     return (

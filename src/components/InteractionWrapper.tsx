@@ -6,6 +6,13 @@ import HealthAssesmentResultSection from "./HealthAssesmentResultSection";
 import HistoryList from "./HistoryList";
 import LoadingSpinner from "./LoadingSpinner";
 
+/**
+ * This component serves as a container for various interaction elements. It contains
+ * the Dropzone for selecting files, the button for identifying plants, assessing plant health, and resetting to the initial state.
+ * It also handles and manages states related to file selection, identification and health assessment results, loading status,
+ * and result history. It has a useEffect hook for getting the stored history from sessionStorage.
+ * It also uses fetch API to make HTTP requests to the plantId API for plant identification and health assessment and stores the results.
+ */
 const InteractionWrapper: React.FC = () => {
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]); // add this state
     const [mode, setMode] = useState<"id" | "ha" | "default">("ha"); // add this state
@@ -14,6 +21,7 @@ const InteractionWrapper: React.FC = () => {
     const [identificationResult, setIdentificationResult] = useState<any>(null); // add this state
     const [resultHistory, setResultHistory] = useState<any[]>([]);
 
+    // get stored history from sessionStorage
     useEffect(() => {
         const storedHistory = sessionStorage.getItem("history");
         if (storedHistory) {
@@ -21,12 +29,14 @@ const InteractionWrapper: React.FC = () => {
         }
     }, []);
 
+    // handle file selection, passed to Dropzone component
     const handleFiles = (files: FileList | null) => {
         if (files) {
             setSelectedFiles(Array.from(files));
         }
     };
 
+    // handle plant identification api call
     const handleIdentification = () => {
         setMode("id");
         setIsLoading(true); // set loading state to true when the request starts
@@ -68,6 +78,7 @@ const InteractionWrapper: React.FC = () => {
             });
     };
 
+    // handle health assesment api call
     const handleHealthAssesment = () => {
         setMode("ha");
         setIsLoading(true); // set loading state to true when the request starts
@@ -110,8 +121,8 @@ const InteractionWrapper: React.FC = () => {
             });
     };
 
+    //complete reset, so user can start over with new images
     const handleReset = () => {
-        //complete reset, so user can start over with new images
         setSelectedFiles([]);
         setMode("default");
         setIsLoading(false);
@@ -122,13 +133,15 @@ const InteractionWrapper: React.FC = () => {
     return (
         <section className="bg-light-bg p-6">
             <div className="flex justify-center items-center flex-col max-w-7xl mx-auto">
-                {/* Render the ResultCard component if identificationResult is not null */}
+                {/* Render the ResultCard component if there is an identification result */}
                 {identificationResult && mode === "id" && (
                     <IdResultSection result={identificationResult} />
                 )}
+                {/* Render the HealthAssesmentResultSection component if there is a health assessment result */}
                 {healthAssesmentResult && mode === "ha" && (
                     <HealthAssesmentResultSection result={healthAssesmentResult} />
                 )}
+
                 {!isLoading && mode !== "default" && (
                     <div className="w-full">
                         <LoadingSpinner mode={mode} />
@@ -165,7 +178,7 @@ const InteractionWrapper: React.FC = () => {
                         Reset
                     </button>
                 )}
-
+                {/* Render the HistoryList component if there are any results in the history */}
                 {resultHistory.length > 0 && <HistoryList history={resultHistory} />}
             </div>
         </section>

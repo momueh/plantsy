@@ -3,9 +3,14 @@ import React from "react";
 import { PlantIdentificationResult } from "../globalTypes";
 
 export type IdResultCardProps = {
-    result: PlantIdentificationResult;
+    result: PlantIdentificationResult; // The result object of a plant identification api call
 };
 
+/**
+ * This component displays the result from a plant identification analysis in a card.
+ * It is used only in the HistoryList component.
+ * It includes the name of the plant, the confidence of the identification, and similar images.
+ */
 const IdResultCard: React.FC<IdResultCardProps> = ({ result }) => {
     const { classification } = result;
     const bestMatch = classification.suggestions[0];
