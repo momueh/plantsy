@@ -14,11 +14,11 @@ import LoadingSpinner from "./LoadingSpinner";
  * It also uses fetch API to make HTTP requests to the plantId API for plant identification and health assessment and stores the results.
  */
 const InteractionWrapper: React.FC = () => {
-    const [selectedFiles, setSelectedFiles] = useState<File[]>([]); // add this state
-    const [mode, setMode] = useState<"id" | "ha" | "default">("ha"); // add this state
-    const [isLoading, setIsLoading] = useState(false); // add this state
-    const [healthAssesmentResult, setHealthAssesmentResult] = useState<any>(null); // add this state
-    const [identificationResult, setIdentificationResult] = useState<any>(null); // add this state
+    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+    const [mode, setMode] = useState<"id" | "ha" | "default">("ha");
+    const [isLoading, setIsLoading] = useState(false);
+    const [healthAssesmentResult, setHealthAssesmentResult] = useState<any>(null);
+    const [identificationResult, setIdentificationResult] = useState<any>(null);
     const [resultHistory, setResultHistory] = useState<any[]>([]);
 
     // get stored history from sessionStorage
@@ -141,7 +141,7 @@ const InteractionWrapper: React.FC = () => {
                     <HealthAssesmentResultSection result={healthAssesmentResult} />
                 )}
 
-                {!isLoading && mode !== "default" && (
+                {isLoading && mode !== "default" && (
                     <div className="w-full">
                         <LoadingSpinner mode={mode} />
                     </div>
