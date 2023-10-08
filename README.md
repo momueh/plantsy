@@ -59,6 +59,10 @@ npm run dev
 
 The application will run on `localhost:5173` in your browser.
 
+## Testing
+
+Example images for testing purposes can be found in the src/assets directory.
+
 ## Acknowledgments
 
 Thanks to the Plant.id API for providing the services for plant identification and health assessment.
