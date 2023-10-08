@@ -39,6 +39,8 @@ npm install
 
 ### Setup Environment Variables
 
+A .env file with an API-Key will be provided. However, this is only for evaluation purposes and there is a limit for the amount of api requests that can be made. If the limit is reached, consider creating your own account and generate your personal API-Key.
+
 Create a `.env` file in the root directory and set up your environment variables. An example configuration can be seen in the `.env.example` file.
 
 For example:
